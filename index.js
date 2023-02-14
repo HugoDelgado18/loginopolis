@@ -20,10 +20,7 @@ app.get('/', async (req, res, next) => {
 // TODO - takes req.body of {username, password} and creates a new user with the hashed password
 app.post("/register", (req, res) => {
   const { username, password } = req.body;
-
-  if (!password) {
-      res.send("Password is missing.");
-  }
+  (!password) && res.send("Password is missing.");
 
   bcrypt.hash(password, 5, async (err, hash) => {
       if (err) {
@@ -42,14 +39,11 @@ app.post("/register", (req, res) => {
 // TODO - takes req.body of {username, password}, finds user by username, and compares the password with the hashed version from the DB
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-
-  if (!password) {
-      res.send("Password is missing.");
-  }
+  (!password) && res.send("Password is missing.");
 
   const singleUser = await User.findOne({ where: { username: username } });
 
-  if (singleUser == null) {
+  if (singleUser === null) {
       res.send("User does not exist in server.");
   } else {
       const result = await bcrypt.compare(password, singleUser.password);
