@@ -47,11 +47,7 @@ app.post("/login", async (req, res) => {
       res.send("User does not exist in server.");
   } else {
       const result = await bcrypt.compare(password, singleUser.password);
-      if (result) {
-          res.send(`successfully logged in user ${username}`);
-      } else {
-          res.send("incorrect username or password");
-      }
+      result ? res.send(`successfully logged in user ${username}`) : res.send("incorrect username or password");  
   }
 });
 
